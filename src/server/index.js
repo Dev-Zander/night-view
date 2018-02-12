@@ -1,18 +1,21 @@
-const express = require('express'),
-    bodyParser = require('body-parser'),
-    ctrl = require('../server/controllers/controller'),
-    app = express(),
-    port = 3000
+const express = require('express');
+const bodyParser = require('body-parser');
+const sc = require('../server/controllers/show_controller');
+
+const app = express();
+
+const port = 3001;
 
 
-   app.use(bodyParser.json());
-//    app.use( express.static ());
+app.use(bodyParser.json());
+// app.use(express.static(_dirname + '/..public/build'));
 
 
-// app.post('api', .create)
-// app.get( 'api', .read)
-// app.put('api', .update)
-// app.delete('api', .delete)
+const showBaseUrl = "/api/shows";
+app.post(showBaseUrl, sc.create);
+app.get(showBaseUrl, sc.read);
+app.put(`${showBaseUrl}/:id`, sc.update);
+app.delete(`${showBaseUrl}/:id`, sc.delete);
 
-
-app.listen(port,()=> console.log(`Listening on port ${port}.`))
+app.listen( port, () => { console.log(`Server listening on port ${port}`);});
+ 
