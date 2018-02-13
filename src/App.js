@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
+import Display from './Display.js'
+import FavTvList from './FavTvList'
 
 
 class App extends Component {
@@ -13,7 +15,8 @@ class App extends Component {
       showsToDisplay: '',
       savedShows: [],
     };
-// this.deleteShow = this.deleteShow.bind(this)
+this.deleteShow = this.deleteShow.bind(this)
+this.updateShowName = this.updateShowName.bind(this)
   }
 
   deleteShow(id){
@@ -22,6 +25,14 @@ class App extends Component {
       this.setState({savedShows:res.data})
     })
   }
+
+  updateShowName(id, show){
+    axios.put(`/api/shows/${id}`, {
+        show
+    })
+    .then(res => this.setState({savedShows:res.data}))
+}
+
 
 saveShow(show){
   console.log(show)
@@ -56,13 +67,14 @@ saveShow(show){
     console.log(this.state.showsToDisplay)
     var showsOnScreen = this.state.savedShows.map(item =>{
       return (
-       <p key={item.id}>
-       {item.show}
-         <button onClick={() => {
-           console.log(this)
-           this.deleteShow(item.id)
-         }}>Delete</button>
-      </p>
+        <FavTvList item={item} key={item.id} deleteShow = {this.deleteShow} updateShowName = {this.updateShowName}/>
+      //  <p key={item.id}>
+      //  {item.show}
+      //    <button onClick={() => {
+      //      console.log(this)
+      //      this.deleteShow(item.id)
+      //    }}>Delete</button>
+      // </p>
       )
     })
     console.log(this.state)
@@ -82,8 +94,7 @@ saveShow(show){
 
               <div>
                 <section>
-                  <div className="showName">{this.state.showsToDisplay}
-                  </div>
+                  <Display showName={this.state.showsToDisplay}/>
                 </section>
               </div>
             <div className="results">{this.state.summary}</div>

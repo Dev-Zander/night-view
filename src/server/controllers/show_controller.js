@@ -4,9 +4,15 @@ let id = 0;
 module.exports = {
     create: (req, res) =>{
         const {show} = req.body;
-        shows.push({id, show});
-        id++;
-        res.status(200).send(shows)
+        console.log(shows)
+        // if(shows.filter(a => a.name===show.name).length){
+        //     res.status(200).send(shows)
+        // }else{
+
+            shows.push({id, show});
+            id++;
+            res.status(200).send(shows)
+        // }
 
     },
     read: (req, res) =>{
